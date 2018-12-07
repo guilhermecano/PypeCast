@@ -91,8 +91,7 @@ def plot_forecasts(series, forecasts, n_test):
         plt.plot(xaxis, forecasts[i], color='red')
     # show the plot
     plt.show()
-
-
+    
 def evaluate_forecasts(test, forecasts, n_lag, n_seq):
     for i in range(n_seq):
         actual = [row[i] for row in test]        

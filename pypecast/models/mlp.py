@@ -61,7 +61,6 @@ class MLP(Model):
         model.add(Dense(out_shape))
         self._model = model
 
-
     def fit(self, train, n_batch = 1, n_epoch = 1000, loss = 'mse', opt = 'adam', early_stopping = False):
         X, y = train[:, 0:self._n_lag], train[:, self._n_lag:]
         X = X.reshape(X.shape[0], 1, X.shape[1]) #n_series,  n_timesteps, n_features
@@ -78,13 +77,14 @@ class MLP(Model):
                 es = EarlyStopping(monitor='val_loss', min_delta=0, patience=1, verbose=0, mode='auto', baseline=None)
         else:
             es = early_stopping
+
         # fit network
         self._model.fit(X, y, epochs=n_epoch, batch_size=n_batch, verbose=2, shuffle=False, validation_split=0.2, callbacks=[es])
 
         print('-'*60)
         print('Model trained')
 
-    def forecast_series(self, test):
+    def forecast_series(self, test, scaler, orig_series):
         assert self._model is not None, "Model must be trained first"
 
         forecasts = list()
@@ -94,5 +94,9 @@ class MLP(Model):
             forecast = self._forecast_model(X)
             # store the forecast
             forecasts.append(forecast)
+        
+        #inverse_transform
+        forecasts = self._inverse_transform(orig_series,forecasts,scaler,test.shape[0])
+
         self._forecasts = forecasts
         return forecasts

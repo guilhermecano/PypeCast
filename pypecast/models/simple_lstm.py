@@ -83,7 +83,7 @@ class Simple_LSTM(Model):
         print('-'*60)
         print('Model trained')
 
-    def forecast_series(self, test):
+    def forecast_series(self, test, scaler, orig_series):
         assert self._model is not None, "Model must be trained first"
 
         forecasts = list()
@@ -93,6 +93,10 @@ class Simple_LSTM(Model):
             forecast = self._forecast_model(X)
             # store the forecast
             forecasts.append(forecast)
+        
+        #inverse_transform
+        forecasts = self._inverse_transform(orig_series,forecasts,scaler,test.shape[0])
+
         self._forecasts = forecasts
         return forecasts
 

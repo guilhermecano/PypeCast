@@ -4,4 +4,5 @@ Estimated regression coefficients are still unbiased, but they no longer have th
 The MSE may seriously underestimate the true variance of the errors.
 The standard error of the regression coefficients may seriously underestimate the true standard deviation of the estimated regression coefficients.
 Statistical intervals and inference procedures are no longer strictly applicable.
+** Predictability  **
 

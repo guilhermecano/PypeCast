@@ -12,13 +12,18 @@ import warnings
 
 class SeriesDescriptor(object):
     '''Class for quickly analyzing a time series. '''
-
     def __init__(self):
         pass
     
     def full_report(self, data):
         self.describe(data)
         self.autocorr(data)
+        self.trend_check(data)
+        self.seasonality_check(data)
+        self.outliers_check(data)
+        self.lr_cycle_check(data)
+        self.const_var_check(data)
+        self.get_abrupt_changes(data)
 
     def describe(self, data):
         print('-> Description of the series data:')
@@ -28,7 +33,6 @@ class SeriesDescriptor(object):
             print(pd.DataFrame(data).describe()) 
 
     def autocorr(self, data, unbiased = False, ):
-
         #configuration of the plot
         print('-> Autocorrelation and partial autocorrelation:')
         warnings.filterwarnings("ignore")
@@ -48,12 +52,13 @@ class SeriesDescriptor(object):
 
         plt.title('Partial autocorrelation of the series')
         plt.xlabel('timestep')
-        plt.ylabel('autocorrelation')
+        plt.ylabel('Partial autocorrelation')
         sns.reset_defaults()
         return ac
         
     def trend_check(self, data):
         print('-> Checking for trends:')
+        
     
     def seasonality_check(self, data):
         print('-> Checking for seasonality:')

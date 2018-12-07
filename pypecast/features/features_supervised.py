@@ -98,7 +98,7 @@ class BuildFeaturesSupervised(BuildFeatures):
         else:
             n_test = int(self._test_split*supervised_values.shape[0])
             train, test = supervised_values[:-n_test], supervised_values[-n_test:]
-        return train, test
+        return (self._scaler,self._difference), train, test
 
 
 
