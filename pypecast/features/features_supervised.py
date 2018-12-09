@@ -80,7 +80,7 @@ class BuildFeaturesSupervised(BuildFeatures):
             # rescale values to -1, 1
             if self._scaler_type == 'norm':
                 self._scaler = MinMaxScaler(feature_range=(-1, 1))
-            elif self._scaler == 'std':
+            elif self._scaler_type == 'std':
                 self._scaler = StandardScaler()
             else:
                 self._scaler = self._scaler_type

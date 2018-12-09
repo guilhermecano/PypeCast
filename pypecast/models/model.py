@@ -19,7 +19,7 @@ class Model(object):
 
         self._model = None
         self._forecasts = None
-
+        self._actual = None
         #Must have variables
         self._n_lag = n_lag
         self._n_seq = n_seq
@@ -40,6 +40,9 @@ class Model(object):
         forecast = self._model.predict(X)
         # convert to array
         return [x for x in forecast[0, :]]
+        
+    def _design_network(self, out_shape):
+        raise(NotImplementedError)
 
     def forecast_series(self, test, scaler, orig_series):
         assert self._model is not None, "Model must be trained first"
@@ -53,8 +56,12 @@ class Model(object):
             forecasts.append(forecast)
 
         #inverse_transform
-        forecasts = self._inverse_transform(orig_series,forecasts,scaler,test.shape[0])
+        forecasts = self._inverse_transform(orig_series,forecasts,scaler,test.shape[0]+2)
         self._forecasts = forecasts
+        #Actual values
+        actual = [row[self._n_lag:] for row in test]
+        self._actual = self._inverse_transform(orig_series, actual, scaler, test.shape[0]+2)
+
         return forecasts
 
     def get_forecast(self):
@@ -91,10 +98,10 @@ class Model(object):
             inverted.append(forecast)
         return inverted
     
-    def evaluate_forecast(self, test, forecasts):
+    def evaluate_forecast(self):
         print('-'*20 + 'Forecast evaluation' + '-'*20)
         for i in range(self._n_seq):
-            actual = [row[i] for row in test]        
+            actual = [row[i] for row in self._actual]        
             #print(np.array(actual))
             predicted = [forecast[i] for forecast in self._forecasts]
             #RMSE
@@ -105,7 +112,7 @@ class Model(object):
             print('t+%d sMAPE: %f' % ((i+1), smape(actual, predicted)))
 
     def plot_forecasts(self, series, forecasts, test):
-        n_test = test.shape[0]
+        n_test = test.shape[0]+2
         sns.set()
         # plot the entire dataset in blue
         warnings.filterwarnings("ignore")

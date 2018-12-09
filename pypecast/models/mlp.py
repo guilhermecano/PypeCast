@@ -84,19 +84,19 @@ class MLP(Model):
         print('-'*60)
         print('Model trained')
 
-    def forecast_series(self, test, scaler, orig_series):
-        assert self._model is not None, "Model must be trained first"
+    # def forecast_series(self, test, scaler, orig_series):
+    #     assert self._model is not None, "Model must be trained first"
 
-        forecasts = list()
-        for i in range(len(test)):
-            X, y = test[i, 0:self._n_lag], test[i, self._n_lag:]
-            # make forecast
-            forecast = self._forecast_model(X)
-            # store the forecast
-            forecasts.append(forecast)
+    #     forecasts = list()
+    #     for i in range(len(test)):
+    #         X, y = test[i, 0:self._n_lag], test[i, self._n_lag:]
+    #         # make forecast
+    #         forecast = self._forecast_model(X)
+    #         # store the forecast
+    #         forecasts.append(forecast)
         
-        #inverse_transform
-        forecasts = self._inverse_transform(orig_series,forecasts,scaler,test.shape[0])
+    #     #inverse_transform
+    #     forecasts = self._inverse_transform(orig_series,forecasts,scaler,test.shape[0])
 
-        self._forecasts = forecasts
-        return forecasts
+    #     self._forecasts = forecasts
+    #     return forecasts
