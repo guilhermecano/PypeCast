@@ -19,11 +19,10 @@ Project Organization
     │
     ├── models             <- Trained and serialized models, model predictions, or model summaries
     │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
+    ├── notebooks          <- Jupyter notebooks. Recomended naming convention is a number (for ordering),
     │                         the creator's initials, and a short `-` delimited description, e.g.
     │                         `1.0-jqp-initial-data-exploration`.
     │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
     │
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
     │   └── figures        <- Generated graphics and figures to be used in reporting
@@ -35,19 +34,32 @@ Project Organization
     ├── src                <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
     │   │
-    │   ├── data           <- Scripts to download or generate data
+    │   ├── data           <- Scripts to download and generate HFT data from bovespa's FTP server.
     │   │   └── make_dataset.py
+    │   │   └── download_data.sh
     │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
+    │   ├── features       <- Scripts to turn raw data into features for ANN models.
     │   │   └── build_features.py
+    │   │   └── features_supervised.py
+    │   │
+    │   ├── descriptor         <- Scripts to exploratory data analysis, with tools for time-series.
+    │   │   │        
+    │   │   └── series_description.py
     │   │
     │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
+    │   │   │                 predictions.
+    │   │   ├── Model.py
+    │   │   └── mlp.py
+    │   │   └── simple_lstm.py
+    │   │   └── simple_rnn.py
     │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
+    │   ├── utils         <- Auxiliar functions or utilities.
+    │   │   │        
+    │   │   └── utils.py
+    │   │
+    │   └── metrics  <- Scripts to create exploratory and results oriented visualizations
+    │       └── metrics.py
+    │       └── uncertainty_losses.py
     │
     └── tox.ini            <- tox file with settings for running tox; see tox.testrun.org
 
