@@ -100,7 +100,9 @@ class Model(object):
     
     def evaluate_forecast(self):
         print('-'*20 + 'Forecast evaluation' + '-'*20)
+        print('')
         for i in range(self._n_seq):
+            print('Instant t+{}'.format(i+1))
             actual = [row[i] for row in self._actual]        
             #print(np.array(actual))
             predicted = [forecast[i] for forecast in self._forecasts]
@@ -108,8 +110,13 @@ class Model(object):
             print('t+%d RMSE: %f' % ((i+1), rmse(actual, predicted)))
             #MAE
             print('t+%d MAE: %f' % ((i+1), mae(actual, predicted)))
+            #MAPE
+            print('t+%d MAPE: %f' % ((i+1), mape(actual, predicted)))
             #sMAPE
             print('t+%d sMAPE: %f' % ((i+1), smape(actual, predicted)))
+            #MASEE
+            #print('t+%d MASE: %f' % ((i+1), mase(actual, predicted)))
+            print()
 
     def plot_forecasts(self, series, forecasts, test):
         n_test = test.shape[0]+2

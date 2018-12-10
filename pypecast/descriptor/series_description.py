@@ -4,10 +4,15 @@ from __future__ import division
 
 import pandas as pd
 import seaborn as sns
+import numpy as np
 import matplotlib.pyplot as plt
 
 from statsmodels.tsa.stattools import acf, acovf
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+
+from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.stattools import kpss
+
 import warnings
 
 class SeriesDescriptor(object):
@@ -15,11 +20,11 @@ class SeriesDescriptor(object):
     def __init__(self):
         pass
     
-    def full_report(self, data):
+    def full_report(self, data, ppy=12):
         self.describe(data)
         self.autocorr(data)
         self.trend_check(data)
-        self.seasonality_check(data)
+        self.seasonality_test(data, ppy)
         self.outliers_check(data)
         self.lr_cycle_check(data)
         self.const_var_check(data)
@@ -28,9 +33,14 @@ class SeriesDescriptor(object):
     def describe(self, data):
         print('-> Description of the series data:')
         if isinstance(data,(pd.DataFrame,)):
-            print(data.describe())
+            df = data
+            print(df.describe())
         else:
-            print(pd.DataFrame(data).describe()) 
+            df = pd.DataFrame(data)
+            print(df.describe()) 
+
+        print('-'*20 + ' Histogram ' + '-'*20)
+        df.hist()
 
     def autocorr(self, data, unbiased = False, ):
         #configuration of the plot
@@ -56,15 +66,32 @@ class SeriesDescriptor(object):
         sns.reset_defaults()
         return ac
         
+    def stationarity_kpps(self,data):
+        return kpps(data)
+    
     def trend_check(self, data):
         print('-> Checking for trends:')
         
     
-    def seasonality_check(self, data):
-        print('-> Checking for seasonality:')
+    def seasonality_test(self, data, ppy=12):
+        """
+        Seasonality test
+        :param data: time series
+        :param ppy: periods per year
+        :return: boolean value: whether the TS is seasonal
+        """
+        s = acf(data, 1)
+        for i in range(2, ppy):
+            s = s + (acf(data, i) ** 2)
+
+        limit = 1.645 * (np.sqrt((1 + 2 * s) / len(data)))
+
+        return (abs(acf(data, ppy))) > limit
+
     
     def outliers_check(self, data):
         print('-> Checking for outliers:')
+        
 
     def lr_cycle_check(self, data):
         print('-> Checking for long-run cycles:')

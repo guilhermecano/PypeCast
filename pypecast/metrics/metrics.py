@@ -16,6 +16,15 @@ def rmse(y_true, y_pred):
     """
     return np.sqrt(mean_squared_error(y_true, y_pred))
 
+def mse(y_true, y_pred):
+    """
+    Calculates MSE
+    :param y_true: actual values
+    :param y_pred: predicted values
+    :return: MSE
+    """
+    return mean_squared_error(y_true, y_pred)
+
 def mae(y_true, y_pred):
     """
     Calculates MAE
@@ -32,7 +41,9 @@ def mape(y_true, y_pred):
     :param y_pred: predicted values
     :return: sMAPE
     """
-    raise(NotImplementedError)
+    y_true = np.reshape(y_true, (-1,))
+    y_pred = np.reshape(y_pred, (-1,))
+    return np.mean(np.abs((y_true - y_pred)/y_true))
 
 def smape(y_true, y_pred):
     """
@@ -73,4 +84,7 @@ def mase(insample, y_true, y_pred, freq):
     masep = np.mean(abs(insample[freq:] - y_hat_naive))
 
     return np.mean(abs(y_true - y_pred)) / masep
+
+def mutual_info():
+    raise(NotImplementedError)
 

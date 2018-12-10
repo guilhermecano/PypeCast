@@ -2,7 +2,7 @@
 import keras.backend as K
 import numpy as np
 
-class UM_collection(object):
+class MDN_collection(object):
     def __init__(self, n_seq, n_distr = 1):
         self._n_seq = n_seq  #The number of outputs we want to predict
         self._n_distr = n_distr  #The number of distributions we want to use in the mixture
@@ -13,10 +13,9 @@ class UM_collection(object):
         return K.log(K.sum(K.exp(x - x_max), 
                         axis=axis, keepdims=True))+x_max
 
-
     def mean_log_Gaussian_like(self, y_true, parameters):
         """Mean Log Gaussian Likelihood distribution
-        Note: The 'self._n_seq' variable is obtained as global variable
+        Note: The 'self._n_seq' variable is obtained as a private class variable
         """
         components = K.reshape(parameters,[-1, self._n_seq + 2, self._n_distr])
         mu = components[:, :self._n_seq, :]
@@ -32,10 +31,9 @@ class UM_collection(object):
         res = - K.mean(log_gauss)
         return res
 
-
     def mean_log_LaPlace_like(self, y_true, parameters):
         """Mean Log Laplaself._n_seqe Likelihood distribution
-        Note: The 'self._n_seq' variable is obtained as global variable
+        Note: The 'self._n_seq' variable is obtained as a private class variable
         """
         components = K.reshape(parameters,[-1, self._n_seq + 2, self._n_distr])
         mu = components[:, :self._n_seq, :]

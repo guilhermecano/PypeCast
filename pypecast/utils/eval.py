@@ -93,9 +93,6 @@ def plot_forecasts(series, forecasts, n_test):
     plt.show()
     
 def evaluate_forecasts(test, forecasts, n_lag, n_seq):
-    actual = [row[n_lag:] for row in test]
-    actual = inverse_transform(series, actual, n_test+2, scaler)
-
     for i in range(n_seq):
         actual = [row[i] for row in test]        
         #print(np.array(actual))
