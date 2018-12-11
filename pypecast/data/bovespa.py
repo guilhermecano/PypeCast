@@ -3,7 +3,7 @@ from tqdm import tqdm
 import numpy as np
 import os
 
-from pypecast.utils.path_finder import absoluteFilePaths 
+from pypecast.utils.path_finder import absoluteFilePaths
 
 def read_hft_data(path):
     headers = ['Data','Simb','NumNeg','Preco','Quant',

@@ -18,18 +18,29 @@ import warnings
 class SeriesDescriptor(object):
     '''Class for quickly analyzing a time series. '''
     def __init__(self):
+        sns.set()
         pass
     
     def full_report(self, data, ppy=12):
+        self.plot_series(data)
         self.describe(data)
         self.autocorr(data)
-        self.trend_check(data)
-        self.seasonality_test(data, ppy)
-        self.outliers_check(data)
-        self.lr_cycle_check(data)
-        self.const_var_check(data)
-        self.get_abrupt_changes(data)
+        #self.trend_check(data)
+        #self.seasonality_test(data, ppy)
+        self.outlier_check(data)
+        #self.lr_cycle_check(data)
+        #self.const_var_check(data)
+        #self.get_abrupt_changes(data)
 
+    def plot_series(self,data):
+        print('-> Visualization of the series data:')
+        #sns.set()
+        sns.lineplot(data=data)
+        plt.title('Original time-Series')
+        plt.xlabel('timestep')
+        plt.ylabel('Value')
+        plt.show()
+        #sns.reset_defaults()
     def describe(self, data):
         print('-> Description of the series data:')
         if isinstance(data,(pd.DataFrame,)):
@@ -40,15 +51,16 @@ class SeriesDescriptor(object):
             print(df.describe()) 
 
         print('-'*20 + ' Histogram ' + '-'*20)
-        df.hist()
+        sns.distplot(data)
+        plt.title('Data distribution')
+        plt.xlabel('Value')
+        plt.ylabel('Occurrence')
+        plt.show()
 
     def autocorr(self, data, unbiased = False, ):
         #configuration of the plot
         print('-> Autocorrelation and partial autocorrelation:')
         warnings.filterwarnings("ignore")
-        sns.set()
-        plt.figure(figsize=[12,6])
-
         #Autocorrelation array
         ac = acf(data)
         
@@ -57,17 +69,11 @@ class SeriesDescriptor(object):
         plt.title('Autocorrelation of the series')
         plt.xlabel('timestep')
         plt.ylabel('autocorrelation')
-
-        plot_pacf(data)
-
-        plt.title('Partial autocorrelation of the series')
-        plt.xlabel('timestep')
-        plt.ylabel('Partial autocorrelation')
-        sns.reset_defaults()
+        plt.show()
         return ac
         
-    def stationarity_kpps(self,data):
-        return kpps(data)
+    # def stationarity_kpps(self,data):
+    #     return kpps(data)
     
     def trend_check(self, data):
         print('-> Checking for trends:')
@@ -89,9 +95,14 @@ class SeriesDescriptor(object):
         return (abs(acf(data, ppy))) > limit
 
     
-    def outliers_check(self, data):
+    def outlier_check(self, data):
         print('-> Checking for outliers:')
-        
+       # sns.set()
+        sns.boxplot(data=data)
+        plt.title('Series Boxplot')
+        # plt.xlabel('')
+        plt.ylabel('Values')
+        plt.show()
 
     def lr_cycle_check(self, data):
         print('-> Checking for long-run cycles:')
