@@ -88,7 +88,7 @@ def mase(insample, y_true, y_pred, freq):
 def mutual_info():
     raise(NotImplementedError)
 
-def MAEk(y_true, y_pred, kr):
+def maek(y_true, y_pred, kr):
     def check_threshold(a, kr):
         vf= a<kr
         return vf.astype(int)

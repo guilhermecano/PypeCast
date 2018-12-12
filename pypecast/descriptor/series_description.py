@@ -21,7 +21,7 @@ class SeriesDescriptor(object):
         sns.set()
         pass
     
-    def full_report(self, data, ppy=12):
+    def full_report(self, data):
         self.plot_series(data)
         self.describe(data)
         self.autocorr(data)

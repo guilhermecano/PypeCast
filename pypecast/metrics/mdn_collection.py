@@ -2,7 +2,7 @@
 import keras.backend as K
 import numpy as np
 
-class MDN_collection(object):
+class MDNCollection(object):
     def __init__(self, n_seq, n_distr = 1):
         self._n_seq = n_seq  #The number of outputs we want to predict
         self._n_distr = n_distr  #The number of distributions we want to use in the mixture
