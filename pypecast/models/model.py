@@ -232,7 +232,10 @@ class Model(object):
                 lb = 'Forecasted time-series'
             else:
                 lb = None
-            sns.lineplot(x=xaxis, y=forecasts[i], label=lb,color='r',hue_order=False)
+            if self._n_seq>1:
+                sns.lineplot(x=xaxis, y=forecasts[i], label=lb,color='r',hue_order=False)
+            else:
+                sns.scatterplot(x=xaxis, y=forecasts[i], label=lb,color='r',hue_order=False)
             #plt.plot(xaxis, forecasts[i], color='red',label='Forecasted time-series')
         # show the plot
         plt.show()

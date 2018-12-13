@@ -41,6 +41,7 @@ class SeriesDescriptor(object):
         plt.ylabel('Value')
         plt.show()
         #sns.reset_defaults()
+
     def describe(self, data):
         print('-> Description of the series data:')
         if isinstance(data,(pd.DataFrame,)):
@@ -104,9 +105,9 @@ class SeriesDescriptor(object):
         plt.ylabel('Values')
         plt.show()
         
-        top_points = r["fliers"][0].get_data()[1]
-        bottom_points = r["fliers"][2].get_data()[1]
-
+        # top_points = r["fliers"][0].get_data()[1]
+        # bottom_points = r["fliers"][2].get_data()[1]
+        
     def lr_cycle_check(self, data):
         print('-> Checking for long-run cycles:')
     

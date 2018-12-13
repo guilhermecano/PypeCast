@@ -1,5 +1,5 @@
 from pypecast.metrics.mdn_collection import MDNCollection
-from pypecast.metrics.metrics import *
+from pypecast.metrics.metrics import rmse,mae,mse,mape,smape,maek
 
 metrics = dict(
     MDNCollection=MDNCollection,

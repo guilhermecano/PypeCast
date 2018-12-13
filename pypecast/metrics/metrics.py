@@ -92,6 +92,9 @@ def maek(y_true, y_pred, kr):
     def check_threshold(a, kr):
         vf= a<kr
         return vf.astype(int)
+    y_true = np.reshape(y_true, (-1,))
+    y_pred = np.reshape(y_pred, (-1,))
+    
     dif = y_true - y_pred
     thres = check_threshold(dif,kr)
     return np.sum(np.abs(dif)*thres)/np.sum(thres)

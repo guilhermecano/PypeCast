@@ -8,11 +8,12 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
-class BuildFeaturesSupervised(BuildFeatures):
-    '''Class for building features from a single series into a supervised learning data format'''
+class BuildFeaturesMDN(BuildFeatures):
+    '''Class for building features from a single series into a supervised learning 
+    with uncertainty modelling through mixture density networks'''
     def __init__(self, n_lag, n_seq, test_split = 0.25, n_test=None, difference= False, use_log = False, scaler_type = None):
         
-        super(BuildFeaturesSupervised, self).__init__(
+        super(BuildFeaturesMDN, self).__init__(
             n_lag = n_lag,
             n_seq=n_seq,
             difference = difference,
