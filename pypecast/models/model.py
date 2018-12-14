@@ -238,5 +238,9 @@ class Model(object):
                 sns.scatterplot(x=xaxis, y=forecasts[i], label=lb,color='r',hue_order=False)
             #plt.plot(xaxis, forecasts[i], color='red',label='Forecasted time-series')
         # show the plot
+        plt.title('Forecasting in testing set of time-series')
+        plt.xlabel('timestep')
+        plt.ylabel('Value')
+        
         plt.show()
         sns.reset_defaults()

@@ -39,11 +39,11 @@ def mape(y_true, y_pred):
     Calculates MAPE
     :param y_true: actual values
     :param y_pred: predicted values
-    :return: sMAPE
+    :return: MAPE
     """
     y_true = np.reshape(y_true, (-1,))
     y_pred = np.reshape(y_pred, (-1,))
-    return np.mean(np.abs((y_true - y_pred)/y_true))
+    return 100*np.mean(np.abs((y_true - y_pred)/y_true))
 
 def smape(y_true, y_pred):
     """
@@ -88,15 +88,17 @@ def mase(insample, y_true, y_pred, freq):
 def mutual_info():
     raise(NotImplementedError)
 
-def maek(y_true, y_pred, kr):
+def maek(y_true, y_pred, stds, kr):
     def check_threshold(a, kr):
         vf= a<kr
         return vf.astype(int)
     y_true = np.reshape(y_true, (-1,))
     y_pred = np.reshape(y_pred, (-1,))
-    
+    stds = np.array(stds)
+    print('stds: {}'.format(stds))
     dif = y_true - y_pred
-    thres = check_threshold(dif,kr)
+    thres = check_threshold(stds,kr)
+    print('thres: {}'.format(thres))
     return np.sum(np.abs(dif)*thres)/np.sum(thres)
 
 

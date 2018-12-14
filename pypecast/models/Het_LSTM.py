@@ -12,6 +12,7 @@ import numpy as np
 from pypecast.models import Model
 from pypecast.metrics import MDNCollection
 from pypecast.metrics.metrics import *
+from copy import copy
 
 from keras.callbacks import EarlyStopping
 import seaborn as sns
@@ -33,6 +34,7 @@ class MDN_Het_LSTM(Model):
         self._n_distr = n_distr
 
         self._stds = None
+        self._scl_stds = None
 
         collection = MDNCollection(self._n_seq, self._n_distr)
         self._loss = collection.mean_log_Gaussian_like
@@ -110,15 +112,15 @@ class MDN_Het_LSTM(Model):
 
         #inverse_transform
         forecasts = self._inverse_transform(orig_series,forecasts,scaler,test.shape[0]+2)
+        self._scl_stds = copy(stds)
         self._stds = scaler[0].inverse_transform(stds)
-        print(stds)
         self._forecasts = forecasts
         #Actual values
         actual = [row[self._n_lag:] for row in test]
         self._actual = self._inverse_transform(orig_series, actual, scaler, test.shape[0]+2)
 
         return forecasts
-    def _use_metrics_wkeep(self, actual, predicted, kr=0.5):
+    def _use_metrics_wkeep(self, actual, predicted, kr=0.75):
             k = kr*np.max(self._stds)
             #RMSE
             m1 = rmse(actual, predicted)
@@ -129,7 +131,7 @@ class MDN_Het_LSTM(Model):
             #sMAPE
             m4 = smape(actual, predicted)
             #MAE_keep
-            m5 = maek(actual, predicted, k)
+            m5 = maek(actual, predicted,self._scl_stds, kr)
             return m1,m2,m3,m4,m5
 
     def evaluate_forecast(self, save_report = False, filename = '../reports/evaluation.xlsx', return_dicts = False, verbose = 1):
@@ -148,12 +150,13 @@ class MDN_Het_LSTM(Model):
             #print(np.array(actual))
             predicted = [forecast[i] for forecast in self._forecasts]
 
-            m1,m2,m3,m4 = self._use_metrics(actual,predicted)
+            m1,m2,m3,m4,m5 = self._use_metrics_wkeep(actual,predicted)
             if verbose!=0:
                 print('t+%d RMSE: %f' % ((i+1), m1))
                 print('t+%d MAE: %f' % ((i+1), m2))
                 print('t+%d MAPE: %f' % ((i+1), m3))
                 print('t+%d sMAPE: %f' % ((i+1),m4))
+                print('t+%d MAEk: %f' % ((i+1),m5))
 
             steps_metrics[(i+1)] = [m1,m2,m3,m4]
             if verbose!=0:
@@ -238,5 +241,8 @@ class MDN_Het_LSTM(Model):
                 #sns.scatterplot(x=xaxis, y=forecasts[i], label=lb,color='r',hue_order=False)
                 plt.errorbar(x=xaxis, y=forecasts[i], yerr=self._stds[i], linestyle='None', marker='^', color='r')
         # show the plot
+        plt.title('Forecasting in testing set of time-series')
+        plt.xlabel('timestep')
+        plt.ylabel('Value')
         plt.show()
         sns.reset_defaults()
