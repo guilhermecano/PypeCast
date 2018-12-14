@@ -134,7 +134,7 @@ class MDN_Het_LSTM(Model):
             m5 = maek(actual, predicted,self._scl_stds, kr)
             return m1,m2,m3,m4,m5
 
-    def evaluate_forecast(self, save_report = False, filename = '../reports/evaluation.xlsx', return_dicts = False, verbose = 1):
+    def evaluate_forecast(self, keep_rate=0.5, save_report = False, filename = '../reports/evaluation.xlsx', return_dicts = False, verbose = 1):
         if verbose!=0:
             print('-'*20 + 'Forecast evaluation' + '-'*20)
             print('')

@@ -70,15 +70,16 @@ class Simple_LSTM(Model):
         #compile model
         self._model.compile(loss=loss, optimizer=opt)
 
-        #check early stopping
         if isinstance(early_stopping, (bool,)):
             #default es
             if early_stopping:
-                es = EarlyStopping(monitor='val_loss', min_delta=0, patience=1, verbose=0, mode='auto', baseline=None)
+                es = [EarlyStopping(monitor='val_loss', min_delta=0, patience=1, verbose=0, mode='auto', baseline=None)]
+            else:
+                es = early_stopping
         else:
-            es = early_stopping
+            es = [early_stopping]
         # fit network
-        self._model.fit(X, y, epochs=n_epoch, batch_size=n_batch, verbose=2, shuffle=False, validation_split=0.2, callbacks=[es])
+        self._model.fit(X, y, epochs=n_epoch, batch_size=n_batch, verbose=2, shuffle=False, validation_split=0.2, callbacks=es)
         
         print('-'*60)
         print('Model trained')
