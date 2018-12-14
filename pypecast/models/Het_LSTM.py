@@ -231,15 +231,15 @@ class MDN_Het_LSTM(Model):
             off_e = off_s + len(forecasts[i])
             xaxis = [x for x in range(off_s, off_e)]
             if i==0:
-                lb = 'Forecasted time-series'
+                lbs = 'Forecast + uncertainty score (std)'
             else:
-                lb = None
+                lbs = None
             if self._n_seq>1:
-                #sns.lineplot(x=xaxis, y=forecasts[i], label=lb,color='r',hue_order=False)
-                plt.errorbar(x=xaxis, y=forecasts[i], yerr=self._stds[i], linestyle='None', marker='^', color='r')
+                plt.errorbar(x=xaxis, y=forecasts[i], yerr=self._stds[i], linestyle='None', marker='^', color='r', label=lbs)
             else:
-                #sns.scatterplot(x=xaxis, y=forecasts[i], label=lb,color='r',hue_order=False)
-                plt.errorbar(x=xaxis, y=forecasts[i], yerr=self._stds[i], linestyle='None', marker='^', color='r')
+                plt.errorbar(x=xaxis, y=forecasts[i], yerr=self._stds[i], linestyle='None', marker='^',
+                 color='r',label=lbs)
+        plt.legend()
         # show the plot
         plt.title('Forecasting in testing set of time-series')
         plt.xlabel('timestep')

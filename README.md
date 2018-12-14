@@ -1,7 +1,16 @@
 PypeCast
 ==============================
 
-valuating and forecasting general time series with Artificial Neural Networks (ANN).
+PypeCast: an open source
+Python package for fast time series analysis and forecasting
+with artificial neural networks. PypeCast consists of four main
+modules: Data, Descriptor, Features and Models. The package
+comes with simple predefined ANN forecasters, such as LSTM
+based models, which are known to perform well in time series
+forecasting. It also contains deep regression networks forecasters
+with uncertainty estimation, which can be useful in situations
+when making a wrong forecast is specially costly.
+
 
 Project Organization
 ------------
