@@ -121,7 +121,6 @@ class MDN_Het_LSTM(Model):
 
         return forecasts
     def _use_metrics_wkeep(self, actual, predicted, kr=0.75):
-            k = kr*np.max(self._stds)
             #RMSE
             m1 = rmse(actual, predicted)
             #MAE
@@ -150,7 +149,7 @@ class MDN_Het_LSTM(Model):
             #print(np.array(actual))
             predicted = [forecast[i] for forecast in self._forecasts]
 
-            m1,m2,m3,m4,m5 = self._use_metrics_wkeep(actual,predicted)
+            m1,m2,m3,m4,m5 = self._use_metrics_wkeep(actual,predicted, kr=keep_rate)
             if verbose!=0:
                 print('t+%d RMSE: %f' % ((i+1), m1))
                 print('t+%d MAE: %f' % ((i+1), m2))
