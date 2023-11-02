@@ -1,7 +1,7 @@
 PypeCast
 ==============================
 
-PypeCast: an open source
+PypeCast:
 Python package for fast time series analysis and forecasting
 with artificial neural networks. PypeCast consists of four main
 modules: Data, Descriptor, Features and Models. The package
